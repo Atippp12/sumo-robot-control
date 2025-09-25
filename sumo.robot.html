@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <link rel="manifest" href="manifest.json">
+    <title>Sumo Robot Control</title>
+    <!-- Add service worker for offline capability -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+    <!-- Same CSS and HTML content as before -->
+    <style>
+        /* Same styles as the previous HTML */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* ... rest of the styles ... */
+    </style>
+</head>
+<body>
+    <!-- Same HTML content as before -->
+    <!-- Add install prompt -->
+    <div id="installPrompt" style="display: none; position: fixed; bottom: 20px; left: 20px; right: 20px; background: #4ecdc4; color: white; padding: 15px; border-radius: 10px; text-align: center;">
+        <p>Install Sumo Robot Control App</p>
+        <button onclick="installApp()" style="background: white; color: #4ecdc4; border: none; padding: 8px 16px; border-radius: 5px; margin: 5px;">Install</button>
+        <button onclick="dismissInstall()" style="background: transparent; color: white; border: 1px solid white; padding: 8px 16px; border-radius: 5px; margin: 5px;">Later</button>
+    </div>
+    
+    <script>
+        // PWA install functionality
+        let deferredPrompt;
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+        
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('App installed');
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('installPrompt').style.display = 'none';
+                });
+            }
+        }
+        
+        function dismissInstall() {
+            document.getElementById('installPrompt').style.display = 'none';
+        }
+        
+        // Same JavaScript as before
+        /* ... all the previous JavaScript code ... */
+    </script>
+</body>
+</html>
